@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 
 /**
  * Created by: 李浩洋 on 2019-10-29
@@ -16,11 +17,16 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
  **/
 @Configuration
 @EnableAuthorizationServer
-public class Oauth2AuthServerConfig extends AuthorizationServerConfigurerAdapter {
+public class OAuth2AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+
+    /**
+     * Authentication authenticate(Authentication authentication)
+     * 用于登录认证
+     */
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -38,8 +44,8 @@ public class Oauth2AuthServerConfig extends AuthorizationServerConfigurerAdapter
                 .secret(passwordEncoder.encode("123456"))
                 .scopes("read","write")
                 .accessTokenValiditySeconds(3600)
-                .authorizedGrantTypes("password")
                 .resourceIds("order-server")//生成的token可以访问的资源服务器的id
+                .authorizedGrantTypes("password")
                 .and()
                 .withClient("orderService")
                 .secret(passwordEncoder.encode("123456"))
@@ -49,5 +55,16 @@ public class Oauth2AuthServerConfig extends AuthorizationServerConfigurerAdapter
                 .resourceIds("order-server")//生成的token可以访问的资源服务器的id
 
                ;
+    }
+
+
+    /**
+     * 过来验token的请求一定是要带上client信息的才行
+     * @param security
+     * @throws Exception
+     */
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+        security.checkTokenAccess("isAuthenticated()");
     }
 }
