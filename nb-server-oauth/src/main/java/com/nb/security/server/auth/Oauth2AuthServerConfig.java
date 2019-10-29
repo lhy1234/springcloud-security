@@ -38,14 +38,14 @@ public class Oauth2AuthServerConfig extends AuthorizationServerConfigurerAdapter
                 .scopes("read","write")
                 .accessTokenValiditySeconds(3600)
                 .authorizedGrantTypes("password")
-                .resourceIds("order-server")//可以访问的资源服务器的id
+                .resourceIds("order-server")//生成的token可以访问的资源服务器的id
                 .and()
                 .withClient("orderService")
                 .secret(passwordEncoder.encode("123456"))
                 .scopes("read")
                 .accessTokenValiditySeconds(3600)
                 .authorizedGrantTypes("password")
-                .resourceIds("order-server")//可以访问的资源服务器的id
+                .resourceIds("order-server")//生成的token可以访问的资源服务器的id
 
                ;
     }
