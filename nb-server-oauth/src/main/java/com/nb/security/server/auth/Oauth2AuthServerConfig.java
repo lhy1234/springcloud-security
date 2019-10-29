@@ -2,10 +2,12 @@ package com.nb.security.server.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 
 /**
  * Created by: 李浩洋 on 2019-10-29
@@ -18,6 +20,14 @@ public class Oauth2AuthServerConfig extends AuthorizationServerConfigurerAdapter
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+
+    @Override
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+        endpoints.authenticationManager(authenticationManager);
+    }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
@@ -30,13 +40,13 @@ public class Oauth2AuthServerConfig extends AuthorizationServerConfigurerAdapter
                 .authorizedGrantTypes("password")
                 .resourceIds("order-server")//可以访问的资源服务器的id
                 .and()
-                .withClient("order-service")
+                .withClient("orderService")
                 .secret(passwordEncoder.encode("123456"))
                 .scopes("read")
                 .accessTokenValiditySeconds(3600)
                 .authorizedGrantTypes("password")
                 .resourceIds("order-server")//可以访问的资源服务器的id
-                .and()
-                .withClient("order-service");
+
+               ;
     }
 }
