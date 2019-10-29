@@ -1,6 +1,7 @@
 package com.nb.security.server.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,11 +13,11 @@ import org.springframework.stereotype.Service;
 /**
  * Created by: 李浩洋 on 2019-10-29
  **/
-@Service
+@Component
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     /**
-     *
+     *  
      */
     @Autowired
     private PasswordEncoder passwordEncoder;
