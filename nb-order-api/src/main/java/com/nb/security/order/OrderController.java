@@ -22,9 +22,10 @@ public class OrderController {
      * @return
      */
     @PostMapping
-    public OrderInfo create(@RequestBody OrderInfo info, /*@AuthenticationPrincipal String username,*/@AuthenticationPrincipal User user){
+    public OrderInfo create(@RequestBody OrderInfo info, @AuthenticationPrincipal(expression = "#this.id") Long userId/*@AuthenticationPrincipal String username,*//*@AuthenticationPrincipal User user*/){
         //log.info("user is : "+username);
-        log.info("User.getUsername: "+user.getUsername());
+        //log.info("User.getUsername: "+user.getUsername());
+        log.info("expression = #this.id ---> "+userId);
         //查询价格
         PriceInfo price = restTemplate.getForObject("http://localhost:9080/prices/"+info.getProductId(),PriceInfo.class);
         log.info("price is "+price.getPrice());

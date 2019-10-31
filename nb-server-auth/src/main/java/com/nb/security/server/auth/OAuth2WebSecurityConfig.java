@@ -22,8 +22,11 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
 
 
     /**
@@ -35,7 +38,7 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService) //获取用户信息
-                .passwordEncoder(passwordEncoder); //比对密码
+                .passwordEncoder(passwordEncoder()); //比对密码
     }
 
     /**
