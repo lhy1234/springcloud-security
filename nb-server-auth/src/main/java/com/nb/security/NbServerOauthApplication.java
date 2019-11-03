@@ -1,14 +1,20 @@
 package com.nb.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @SpringBootApplication
+@RestController
 public class NbServerOauthApplication {
+
+
+
 
 	/**
 	 * TODO:这个配置放在别处就报循环依赖错误
