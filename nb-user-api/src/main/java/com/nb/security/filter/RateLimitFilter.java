@@ -27,7 +27,7 @@ public class RateLimitFilter extends OncePerRequestFilter {//
 
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        System.err.println("++++流控++++ order-"+1);
+        System.err.println("++++流控++++ "+1);
 
         if (rateLimiter.tryAcquire()) {
             //如果没达到限流阈值，放行

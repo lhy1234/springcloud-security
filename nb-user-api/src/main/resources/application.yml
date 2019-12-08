@@ -4,6 +4,11 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 
 
 #mybatis plus 设置
