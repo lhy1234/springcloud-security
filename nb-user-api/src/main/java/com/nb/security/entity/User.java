@@ -15,15 +15,13 @@ import lombok.experimental.Accessors;
  * @since 2019-10-26
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private Long id;
+    private String name;
     private String username;
     private String password;
-
 
 }

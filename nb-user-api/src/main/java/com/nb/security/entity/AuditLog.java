@@ -17,8 +17,6 @@ import lombok.experimental.Accessors;
  * @since 2019-10-27
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
 public class AuditLog implements Serializable {
 
     private static final long serialVersionUID = 1L;

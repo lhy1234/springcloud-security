@@ -9,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class SecurityConfig implements WebMvcConfigurer {
 
+    //审计日志
     @Autowired
     private AuditLogInterceptor auditLogInterceptor;
 

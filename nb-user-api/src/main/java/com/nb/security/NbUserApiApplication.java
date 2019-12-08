@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class NbUserApiApplication {
 
 
-    @GetMapping
-    public String hello() {
-        return "Hello!";
-    }
+
 
     public static void main(String[] args) {
         SpringApplication.run(NbUserApiApplication.class, args);

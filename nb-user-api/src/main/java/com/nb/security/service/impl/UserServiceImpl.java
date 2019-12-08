@@ -1,9 +1,12 @@
 package com.nb.security.service.impl;
 
 import com.nb.security.entity.User;
+import com.nb.security.entity.UserInfo;
 import com.nb.security.mapper.UserMapper;
 import com.nb.security.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,4 +20,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
+    @Autowired
+    private UserMapper userMapper;
+
+    @Override
+    public UserInfo create(UserInfo userInfo) {
+        User user = new User();
+        //属性复制
+        BeanUtils.copyProperties(userInfo,user);
+        userMapper.insert(user);
+        userInfo.setId(user.getId());
+        return userInfo;
+    }
 }

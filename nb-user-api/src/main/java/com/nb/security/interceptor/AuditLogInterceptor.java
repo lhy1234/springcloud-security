@@ -27,6 +27,7 @@ public class AuditLogInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
+
         AuditLog log = new AuditLog();
         log.setMethod(request.getMethod());
         log.setPath(request.getRequestURI());
@@ -34,10 +35,10 @@ public class AuditLogInterceptor extends HandlerInterceptorAdapter {
 
         User user = (User) request.getAttribute("user");
         if (user != null) {
-            user.setUsername(user.getUsername());
+            log.setUsername(user.getUsername());
         }
         auditLogService.save(log);
-
+        System.err.println("+++审计拦截器，insert+++");
         //将审计日志的id传给request，以便于请求处理完成后更新审计日志
         request.setAttribute("auditLogId", log.getId());
 
@@ -62,7 +63,7 @@ public class AuditLogInterceptor extends HandlerInterceptorAdapter {
         log.setStatus(response.getStatus());
         log.setUpdateTime(new Date());
         auditLogService.updateById(log);
-
+        System.err.println("+++审计拦截器，update+++");
         super.afterCompletion(request, response, handler, ex);
     }
 }
