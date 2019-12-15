@@ -19,75 +19,71 @@ import javax.sql.DataSource;
 
 /**
  * Created by: 李浩洋 on 2019-10-29
+ *
  * 认证服务器
  **/
-@Configuration
-@EnableAuthorizationServer
-public class OAuth2AuthServerConfig extends AuthorizationServerConfigurerAdapter {
+@Configuration  //这是一个配置类
+@EnableAuthorizationServer //当前应用是一个认证服务器
+public class OAuth2AuthServerConfig extends AuthorizationServerConfigurerAdapter {//AuthorizationServerConfigurerAdapter：认证服务器适配器
 
+    //Spring 对密码加密的封装，自己配置下
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
-    @Autowired
-    private DataSource dataSource;
-
-    /**
-     * Authentication authenticate(Authentication authentication)
-     * 用于登录认证
-     */
     @Autowired
     private AuthenticationManager authenticationManager;
 
-
-    @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.tokenStore(tokenStore())  //jdbc token store
-                .authenticationManager(authenticationManager);
-    }
-
-
     /**
-     * jdbc使用数据库存储token
-     * @return
+     * 1，配置客户端应用的信息，让认证服务器知道有哪些客户端应用来申请令牌。
+     *
+     * ClientDetailsServiceConfigurer：客户端的详情服务的配置
+     * @param clients
+     * @throws Exception
      */
-    @Bean
-    public TokenStore tokenStore(){
-        return new JdbcTokenStore(dataSource);
-    }
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-            //内存中存储客户端信息
-//        clients.inMemory()
-//                .withClient("orderApp")
-//                .secret(passwordEncoder.encode("123456"))
-//                .scopes("read","write")
-//                .accessTokenValiditySeconds(3600)
-//                .resourceIds("order-server")//生成的token可以访问的资源服务器的id
-//                .authorizedGrantTypes("password")
-//                .and()
-//                .withClient("orderService")
-//                .secret(passwordEncoder.encode("123456"))
-//                .scopes("read")
-//                .accessTokenValiditySeconds(3600)
-//                .authorizedGrantTypes("password")
-//                .resourceIds("order-server")//生成的token可以访问的资源服务器的id
-//               ;
-
-        clients.jdbc(dataSource);
+        clients.inMemory()//配置在内存里，后面修改为数据库里
+                //~============== 注册【客户端应用】,使客户端应用能够访问认证服务器 ===========
+                .withClient("orderApp")
+                .secret(passwordEncoder.encode("123456")) //spring
+                .scopes("read","write") //orderApp有哪些权限
+                .accessTokenValiditySeconds(3600) //token的有效期
+                .resourceIds("order-server") //资源服务器的id。发给orderApp的token，能访问哪些资源服务器，可以多个
+                .authorizedGrantTypes("password")//授权方式，再给orderApp做授权的时候可以用哪种授权方式授权
+                //~=============客户端应用配置结束 =====================
+                .and()
+                //~============== 注册【资源服务器-订单服务】(因为订单服务需要来认证服务器验令牌),使订单服务也能够访问认证服务器 ===========
+                .withClient("orderServer")
+                .secret(passwordEncoder.encode("123456")) //spring
+                .scopes("read","write") //orderServer有哪些权限
+                .accessTokenValiditySeconds(3600) //token的有效期
+                .resourceIds("order-server") //资源服务器的id。
+                .authorizedGrantTypes("password");//授权方式，
     }
-//
-//    public static void main(String[] args) {
-//        System.err.println(new BCryptPasswordEncoder().encode("123456"));
-//    }
 
     /**
-     * 过来验token的请求一定是要带上client信息的才行
+     *,2，配置用户信息
+     * @param endpoints
+     * @throws Exception
+     */
+    @Override
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+        //传给他一个authenticationManager用来校验传过来的用户信息是不是合法的,注进来一个，自己实现
+        endpoints.authenticationManager(authenticationManager);
+    }
+
+
+    /**
+     * 3，配置资源服务器过来验token 的规则
      * @param security
      * @throws Exception
      */
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+        /**
+         * 过来验令牌有效性的请求，不是谁都能验的，必须要是经过身份认证的。
+         * 所谓身份认证就是，必须携带clientId，clientSecret，否则随便一请求过来验token是不验的
+         */
         security.checkTokenAccess("isAuthenticated()");
     }
 }

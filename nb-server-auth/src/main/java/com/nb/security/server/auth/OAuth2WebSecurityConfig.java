@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * Created by: 李浩洋 on 2019-10-29
  **/
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity //使安全配置生效
 public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -26,8 +26,9 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private PasswordEncoder passwordEncoder;
 
 
+
     /**
-     * 构建  AuthenticationManager（处理登录操作）
+     * AuthenticationManagerBuilder 是用来构建  AuthenticationManager（处理登录操作）的
      * 需要两个东西：userDetailsService  、passwordEncoder
      * @param auth
      * @throws Exception

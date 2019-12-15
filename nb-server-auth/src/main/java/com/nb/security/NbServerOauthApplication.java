@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class NbServerOauthApplication {
 
-
-
-
 	/**
 	 * TODO:这个配置放在别处就报循环依赖错误
 	 * @return

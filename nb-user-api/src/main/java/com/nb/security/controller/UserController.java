@@ -37,7 +37,7 @@ public class UserController {
     @GetMapping("/login")
     public UserInfo login(UserInfo userInfo,HttpServletRequest request){
 
-        
+
 
         UserInfo info = userService.login(userInfo);
         if(info != null){
