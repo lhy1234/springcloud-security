@@ -1,5 +1,6 @@
 package com.nb.security.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.nb.security.entity.User;
 import com.nb.security.entity.UserInfo;
 import com.nb.security.mapper.UserMapper;
@@ -31,5 +32,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         userMapper.insert(user);
         userInfo.setId(user.getId());
         return userInfo;
+    }
+
+
+    @Override
+    public UserInfo login(UserInfo info) {
+        User user = userMapper.selectOne(new QueryWrapper<User>().eq("username",info.getUsername()).eq("password",info.getPassword()));
+        if(user != null){
+            BeanUtils.copyProperties(user,info);
+            return info;
+        }
+        return null;
     }
 }

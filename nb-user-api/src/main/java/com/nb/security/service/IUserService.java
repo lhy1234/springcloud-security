@@ -22,4 +22,6 @@ public interface IUserService extends IService<User> {
      */
     UserInfo create(UserInfo userInfo);
 
+    UserInfo login(UserInfo info);
+
 }

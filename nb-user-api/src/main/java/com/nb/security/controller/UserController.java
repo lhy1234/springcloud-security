@@ -10,8 +10,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +33,24 @@ public class UserController {
         return userService.create(info);
     }
 
+    //示例
+    @GetMapping("/login")
+    public UserInfo login(UserInfo userInfo,HttpServletRequest request){
+
+        
+
+        UserInfo info = userService.login(userInfo);
+        if(info != null){
+            //防止Session固定攻击
+            HttpSession session = request.getSession(false);
+            if(session != null){
+                session.invalidate();
+            }
+            request.getSession(true).setAttribute("user",info);
+            return info;
+        }
+        return null;
+    }
 
     @PutMapping("/{id}")
     public User update(@RequestBody User user) {
