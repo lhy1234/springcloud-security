@@ -53,7 +53,7 @@ public class OAuth2AuthServerConfig extends AuthorizationServerConfigurerAdapter
                 //~=============客户端应用配置结束 =====================
                 .and()
                 //~============== 注册【资源服务器-订单服务】(因为订单服务需要来认证服务器验令牌),使订单服务也能够访问认证服务器 ===========
-                .withClient("orderServer")
+                .withClient("orderService")
                 .secret(passwordEncoder.encode("123456")) //spring
                 .scopes("read","write") //orderServer有哪些权限
                 .accessTokenValiditySeconds(3600) //token的有效期
