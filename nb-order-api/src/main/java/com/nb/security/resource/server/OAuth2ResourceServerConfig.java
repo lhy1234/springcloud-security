@@ -1,6 +1,7 @@
 package com.nb.security.resource.server;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -28,6 +29,7 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
         http.authorizeRequests()
                 .antMatchers("/hello")
                 .permitAll() //放过/haha不拦截
-                .anyRequest().authenticated();//其余所有请求都拦截
+                .antMatchers(HttpMethod.POST).access("#oauth2.hasScope('write')")//POST请求的token要有写权限
+                .antMatchers(HttpMethod.GET).access("#oauth.hasScope('read')");//GET请求要有read权限
     }
 }
