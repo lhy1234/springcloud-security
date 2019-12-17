@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * Created by: 李浩洋 on 2019-10-29
+ *
  **/
 @Configuration
 @EnableWebSecurity //使安全配置生效
