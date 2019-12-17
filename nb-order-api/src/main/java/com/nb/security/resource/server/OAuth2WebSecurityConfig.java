@@ -31,7 +31,7 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter{
     public ResourceServerTokenServices tokenServices(){
         RemoteTokenServices tokenServices = new RemoteTokenServices();
         tokenServices.setClientId("orderService");//在认证服务器配置的，订单服务的clientId
-        tokenServices.setClientSecret("12345");//在认证服务器配置的，订单服务的ClientSecret
+        tokenServices.setClientSecret("123456");//在认证服务器配置的，订单服务的ClientSecret
         tokenServices.setCheckTokenEndpointUrl("http://localhost:9090/oauth/check_token");
         return tokenServices;
     }
