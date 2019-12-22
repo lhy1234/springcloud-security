@@ -27,8 +27,8 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
          * 进入nb-order-api的所有请求，哪些要拦截，哪些要放过，在这里配置
          */
         http.authorizeRequests()
-                .antMatchers("/hello")
-                .permitAll() //放过/haha不拦截
+                //.antMatchers("/hello")
+               // .permitAll() //放过/haha不拦截
                 .antMatchers(HttpMethod.POST).access("#oauth2.hasScope('write')")//POST请求的token要有写权限
                 .antMatchers(HttpMethod.GET).access("#oauth.hasScope('read')");//GET请求要有read权限
     }

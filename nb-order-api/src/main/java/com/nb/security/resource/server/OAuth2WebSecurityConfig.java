@@ -1,13 +1,14 @@
 package com.nb.security.resource.server;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationManager;
-import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
-import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
+import org.springframework.security.oauth2.provider.token.*;
 
 /**
  * 怎么验发往本服务的请求头的令牌
@@ -23,6 +24,9 @@ import org.springframework.security.oauth2.provider.token.ResourceServerTokenSer
 public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
 
+    @Autowired
+    private UserDetailsService userDetailsService;
+
     /**
      * 通过这个Bean，去远程调用认证服务器，验token
      * @return
@@ -33,9 +37,21 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter{
         tokenServices.setClientId("orderService");//在认证服务器配置的，订单服务的clientId
         tokenServices.setClientSecret("123456");//在认证服务器配置的，订单服务的ClientSecret
         tokenServices.setCheckTokenEndpointUrl("http://localhost:9090/oauth/check_token");
+        //配置一个转换器，将token信息转换为用户对象
+        // TODO：获取用户信息本应该是认证服务器的事吧！总感觉在这里做不合适
+        tokenServices.setAccessTokenConverter(getAccessTokenConverter());
         return tokenServices;
     }
 
+    //转换器，将token转换为用户信息
+    private AccessTokenConverter getAccessTokenConverter() {
+        DefaultAccessTokenConverter accessTokenConverter = new DefaultAccessTokenConverter();
+        //这个类的目的是设UserDetailsService,来将token转换为用户信息，不设默认为空
+        DefaultUserAuthenticationConverter userTokenConverter = new DefaultUserAuthenticationConverter();
+        userTokenConverter.setUserDetailsService(userDetailsService);
+        accessTokenConverter.setUserTokenConverter(userTokenConverter);
+        return accessTokenConverter;
+    }
 
     /**
      * 要认证跟用户相关的信息，一般用 AuthenticationManager
@@ -51,4 +67,5 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter{
         authenticationManager.setTokenServices(tokenServices());//设置为自定义的TokenServices，去校验令牌
         return authenticationManager;
     }
+
 }

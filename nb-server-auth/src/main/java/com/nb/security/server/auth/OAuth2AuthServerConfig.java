@@ -29,10 +29,8 @@ public class OAuth2AuthServerConfig extends AuthorizationServerConfigurerAdapter
     //Spring 对密码加密的封装，自己配置下
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private AuthenticationManager authenticationManager;
-
     /**
      * 1，配置客户端应用的信息，让认证服务器知道有哪些客户端应用来申请令牌。
      *
