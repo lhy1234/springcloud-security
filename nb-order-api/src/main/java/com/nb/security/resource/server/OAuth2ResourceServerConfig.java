@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 
 /**
  * 资源服务器
- * 配置了@EnableResourceServer ，所有发往nb-order-api的请求，都会去请求头里找token，找不到不让你过
+ * 配置了@EnableResourceServer ，所有发往nb-order-api的请求，都会去请求头里找token，找不到不让你过aa
  */
 @Configuration
 @EnableResourceServer//告诉nb-order-api,你就是资源服务器
