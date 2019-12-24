@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 /**
  * Created by: 李浩洋 on 2019-10-29
  **/
-@Component//TODO:这里不写 ("userDetailsService")
+@Component("userDetailsService")//TODO:这里不写 ("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     /**
