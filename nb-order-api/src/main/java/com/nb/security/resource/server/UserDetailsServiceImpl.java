@@ -1,12 +1,14 @@
 package com.nb.security.resource.server;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-@Component("userDetailsService") //TODO:不
+@Component("userDetailsService") //TODO:不指定报错
 public class UserDetailsServiceImpl implements UserDetailsService {
+
 
 
     @Override
