@@ -16,12 +16,14 @@ public class OrderController {
     /**
      * 版本二，token 转换成了 User对象
      * @param info
-     * @param user
+     * @param
      * @return
      */
     @PostMapping
-    public OrderInfo create(@RequestBody OrderInfo info, @AuthenticationPrincipal User user){
-        log.info("获取到username = {}",user.getUsername());
+    //public OrderInfo create(@RequestBody OrderInfo info, @AuthenticationPrincipal User user){
+    public OrderInfo create(@RequestBody OrderInfo info, @AuthenticationPrincipal(expression = "#this.id") Long id){
+        //log.info("获取到username = {}",user.getUsername());
+        log.info("获取到user id = {}",id);
         //查询价格
 //        PriceInfo price = restTemplate.getForObject("http://localhost:9080/prices/"+info.getProductId(),PriceInfo.class);
 //        log.info("price is "+price.getPrice());
