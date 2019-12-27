@@ -8,6 +8,7 @@ public class NbPriceApiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(NbPriceApiApplication.class, args);
+		System.err.println("============= Price Api 启动完成 ============");
 	}
 
 }

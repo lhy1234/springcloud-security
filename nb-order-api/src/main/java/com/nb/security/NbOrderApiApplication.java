@@ -10,6 +10,7 @@ public class NbOrderApiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(NbOrderApiApplication.class, args);
+		System.err.println("============= Order Api 启动完成 ============");
 	}
 
 }

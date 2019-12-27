@@ -26,6 +26,7 @@ public class NbServerOauthApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(NbServerOauthApplication.class, args);
+		System.err.println("============= OAuth Api 启动完成 ============");
 	}
 
 }
