@@ -14,13 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class NbServerGatewayApplication {
 
-
-
-
-
 	public static void main(String[] args) {
 		SpringApplication.run(NbServerGatewayApplication.class, args);
-		System.err.println("=========== GateWay 启动完成 =============");
+		System.err.println("=========== Gateway 启动完成 =============");
 	}
 
 }

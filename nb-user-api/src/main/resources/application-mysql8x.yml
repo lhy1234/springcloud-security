@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/db_oauth?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
     username: root
-    password: root
+    password: lhy1234
     driver-class-name: com.mysql.jdbc.Driver
   http:
     encoding:
