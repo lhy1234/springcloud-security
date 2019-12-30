@@ -26,6 +26,6 @@ public class TokenInfo {
     private String[] aud;
     //令牌过期时间
     private Date exp;
-    //令牌对应的user的 权限集合 UserDetailsService里loadUserByUsername()返回的User的权限集合.authorities("ROLE_ADMIN")
+    //令牌对应的user的 权限集合 UserDetailsService里loadUserByUsername()返回的User的权限集合
     private String[] authorities;
 }

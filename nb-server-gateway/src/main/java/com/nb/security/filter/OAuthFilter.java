@@ -7,7 +7,11 @@ import com.netflix.zuul.exception.ZuulException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @Component
 public class OAuthFilter extends ZuulFilter {
+
+    private RestTemplate restTemplate = new RestTemplate();
 
     /**
      * 过滤器类型：
@@ -48,8 +54,6 @@ public class OAuthFilter extends ZuulFilter {
      * 具体的业务逻辑
      * 这里是认证逻辑，
      */
-
-    //
     @Override
     public Object run() throws ZuulException {
         log.info("oauth start ");
@@ -58,7 +62,7 @@ public class OAuthFilter extends ZuulFilter {
         HttpServletRequest request = requestContext.getRequest();
 
         if(StringUtils.startsWith(request.getRequestURI(),"/token")){
-            // /token开头的请求，是获取token的，直接放行
+            // /token开头的请求，是发往认证服务器的请求，获取token的，直接放行
             return null;
         }
         //获取请求头的token
@@ -69,19 +73,16 @@ public class OAuthFilter extends ZuulFilter {
             return null;
         }
         if(!StringUtils.startsWithIgnoreCase(authHeader,"bearer ")){
-            //不是OAuth的token(如 HTTP basic)，也往下走
+            //这个过滤器只处理OAuth认证的请求，不是OAuth的token(如 HTTP basic)，也往下走
             return null;
         }
-        //走到这里，说明携带OAuth认证的请求，验token
+        //走到这里，说明携带的OAuth认证的请求，验token
         try {
             TokenInfo info = getTokenInfo(authHeader);
             request.setAttribute("tokenInfo",info);
-
         }catch (Exception e){
             log.info("获取tokenInfo 失败！",e);
-            
         }
-
         return null;
     }
 
@@ -92,6 +93,24 @@ public class OAuthFilter extends ZuulFilter {
      */
     private TokenInfo getTokenInfo(String authHeader) {
 
-        return null;
+        //截取请求头里的bearer token，TODO：注意，Bearer是大写？还是小写？postman是大写
+        String token = StringUtils.substringAfter(authHeader,"Bearer ");
+        //认证服务器验token地址 /oauth/check_token 是  spring .security.oauth2的验token端点
+        String oauthServiceUrl = "http://localhost:9090/oauth/check_token";
+
+        HttpHeaders headers = new HttpHeaders();//org.springframework.http.HttpHeaders
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);//不是json请求
+        //网关的appId，appSecret，需要在数据库oauth_client_details注册
+        headers.setBasicAuth("gateway","123456");
+
+        MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
+        params.add("token",token);
+
+        HttpEntity<MultiValueMap<String,String>> entity = new HttpEntity<>(params,headers);
+        ResponseEntity<TokenInfo> response = restTemplate.exchange(oauthServiceUrl, HttpMethod.POST, entity, TokenInfo.class);
+
+        log.info("token info : {}",response.getBody().toString());
+
+        return response.getBody();//返回tokenInfo
     }
 }

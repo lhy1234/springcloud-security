@@ -43,10 +43,7 @@
 		</dependency>
 
 		<!--OAuth2-->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-oauth2</artifactId>
-		</dependency>
+
 
 		<!--lombok-->
 		<dependency>
