@@ -5,12 +5,20 @@ zuul:
     order:  #order结尾的请求，都转发到http://localhost:9060 顶单服务
       url:  http://localhost:9060
   sensitive-headers:  null  #设置敏感头设置为空，Authorization等请求头的请求，都往后转发
-
-
-
-
-
-
+  ratelimit:
+      key-prefix: rate
+      enabled: true
+      repository: REDIS
+      default-policy-list:
+        #    ########### 如下的配置就是说：每1秒内不能超过2个请求，2个请求时间加起来不能超过1秒(quota)############
+        - limit: 2 #optional - request number limit per refresh interval window
+          quota: 1 #optional - request time limit per refresh interval window (in seconds)
+          refresh-interval: 10 #时间窗口 (in seconds)
+          type: ##根据什么控制流量，可以组合使用，如url、httpmethod组合，就会把 /orders的get和post请求分开处理
+            - url
+            - http_method
+          #- user  #根据用户控制需要Security支持，（一般不用）
+          #- origin #根据客户端的ip控制
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/db_oauth?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
