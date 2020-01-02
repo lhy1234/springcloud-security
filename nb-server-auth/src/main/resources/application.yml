@@ -1,6 +1,9 @@
 
 server:
   port: 9090
+
 spring:
   profiles:
-    active: mysql8x
+    active: mysql5x
+  application:
+    name: auth

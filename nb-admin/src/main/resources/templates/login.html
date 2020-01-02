@@ -28,14 +28,17 @@
     function login() {
         var username = $("#username").val();
         var password = $("#password").val();
-        alert(username+", " +password)
+        //alert(username+", " +password)
 
         $.ajax({
             type: "POST",
-            url: "http://localhost:9999/login",
+            url: "/login",
             data: {"username":username, "password":password},
             success: function(msg){
-                location.href = "http://localhost:9999/index";
+                location.href = "/index";
+            },
+            error:function(msg){
+                alert("登录失败！！")
             }
         });
     }

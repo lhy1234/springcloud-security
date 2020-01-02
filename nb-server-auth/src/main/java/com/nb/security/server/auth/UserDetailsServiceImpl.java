@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
  **/
 @Component("userDetailsService")//TODO:这里不写 ("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
-
     /**
      *
      */

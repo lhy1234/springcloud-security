@@ -1,9 +1,9 @@
 zuul:
   routes: #路由的配置是个Map，可以配置多个
     token:  #token结尾的请求，都转发到http://localhost:9090认证服务器地址
-      url:  http://localhost:9090
+      url:  http://auth.nb.com:9090
     order:  #order结尾的请求，都转发到http://localhost:9060 顶单服务
-      url:  http://localhost:9060
+      url:  http://order.nb.com:9060
   sensitive-headers:  null  #设置敏感头设置为空，Authorization等请求头的请求，都往后转发
   ratelimit:
       key-prefix: rate
@@ -13,7 +13,7 @@ zuul:
         #    ########### 如下的配置就是说：每1秒内不能超过2个请求，2个请求时间加起来不能超过1秒(quota)############
         - limit: 2 #optional - request number limit per refresh interval window
           quota: 1 #optional - request time limit per refresh interval window (in seconds)
-          refresh-interval: 10 #时间窗口 (in seconds)
+          refresh-interval: 1 #时间窗口 (in seconds)
           type: ##根据什么控制流量，可以组合使用，如url、httpmethod组合，就会把 /orders的get和post请求分开处理
             - url
             - http_method

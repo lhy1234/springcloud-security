@@ -7,20 +7,37 @@
 <body>
     <h1>欢迎来到sso子系统1</h1>
     <div id="loginTip"></div>
+    <p><button onclick="getOrderInfo()">获取订单信息</button></p>
+
+    <table>
+        <tr><td>order id</td><td><input id="orderId" /></td></tr>
+        <tr><td>order product id</td><td><input id="productId" /></td></tr>
+    </table>
+
+
 
 
 </body>
 <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 <script>
+
+    function getOrderInfo(){
+        $.get("api/order/orders/1",function(data){
+            $("#orderId").val(data.id);
+            $("#productId").val(data.productId);
+        });
+    }
+
     $(document).ready(function(){
 
-        $.get("http://localhost:9999/me",function(data,status){
+        $.get("/me",function(data,status){
             if(data){
                 //已登录
-                $("#loginTip").html("已登录");
+                var htm = "已登录,<a href='/logout'>退出</a>";
+                $("#loginTip").html(htm);
             }else{
                 //未登录
-                var href = "<a href='http://localhost:9999/loginPage'>未登录，去登录</a>";
+                var href = "<a href='/loginPage'>未登录，去登录</a>";
                 $("#loginTip").append(href);
             }
         });

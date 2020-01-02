@@ -1,3 +1,6 @@
 
 server:
   port: 9060
+spring:
+  application:
+    name: order

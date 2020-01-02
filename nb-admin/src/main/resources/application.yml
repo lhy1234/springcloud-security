@@ -1,3 +1,12 @@
 
+zuul:
+  routes: #路由的配置是个Map，可以配置多个
+    api:  #api开头的请求，都转发到网关9070
+      url:  http://gateway.nb.com:9070
+  sensitive-headers:  null  #设置敏感头设置为空，Authorization等请求头的请求，都往后转发
+
 server:
-  port: 9999
+  port: 8080
+spring:
+  application:
+    name: admin
