@@ -4,4 +4,4 @@ server:
 
 spring:
   profiles:
-    active: mysql5x
+    active: mysql8x

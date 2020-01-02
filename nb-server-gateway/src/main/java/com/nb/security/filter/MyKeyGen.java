@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 自定义限流key生成规则，自定义限流规则
  */
-@Component
+//@Component
 public class MyKeyGen extends DefaultRateLimitKeyGenerator {
 
     public MyKeyGen(RateLimitProperties properties, RateLimitUtils rateLimitUtils){

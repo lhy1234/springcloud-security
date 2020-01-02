@@ -3,4 +3,4 @@ server:
   port: 9090
 spring:
   profiles:
-    active: mysql5x
+    active: mysql8x
