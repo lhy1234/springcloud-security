@@ -5,7 +5,7 @@
     <title>Index</title>
 </head>
 <body>
-    <h1>欢迎来到sso子系统1</h1>
+    <h1>welcome to 系统1</h1>
     <div id="loginTip"></div>
     <p><button onclick="getOrderInfo()">获取订单信息</button></p>
 
@@ -37,7 +37,7 @@
                 $("#loginTip").html(htm);
             }else{
                 //未登录
-                var href = "<a href='/loginPage'>未登录，去登录</a>";
+                var href = "<a href='/toAuthLogin'>未登录，去登录</a>";
                 $("#loginTip").append(href);
             }
         });
