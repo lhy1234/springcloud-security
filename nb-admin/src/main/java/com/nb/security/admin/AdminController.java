@@ -2,13 +2,13 @@ package com.nb.security.admin;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
+import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by: 李浩洋 on 2020-01-02
@@ -21,11 +21,13 @@ public class AdminController {
     private RestTemplate restTemplate  = new RestTemplate();
 
 
+
+
     @PostMapping("/login")
-    public void login(@RequestBody Credential credential){
+    public void login(String username,String password/*@RequestBody Credential credential*/, HttpSession session){
 
         //认证服务器验token地址 /oauth/check_token 是  spring .security.oauth2的验token端点
-        String oauthServiceUrl = "http://localhost:9090/token/oauth/token";
+        String oauthServiceUrl = "http://localhost:9070/token/oauth/token";
 
         HttpHeaders headers = new HttpHeaders();//org.springframework.http.HttpHeaders
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);//不是json请求
@@ -33,15 +35,22 @@ public class AdminController {
         headers.setBasicAuth("admin","123456");
 
         MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
-        params.add("username",credential.getUsername());
-        params.add("password",credential.getPassword());
+        params.add("username",username);
+        params.add("password",password);
         params.add("grant_type","password");
-        params.add("scope","read,write");
+        params.add("scope","read write");
 
         HttpEntity<MultiValueMap<String,String>> entity = new HttpEntity<>(params,headers);
         ResponseEntity<AccessToken> response = restTemplate.exchange(oauthServiceUrl, HttpMethod.POST, entity, AccessToken.class);
 
+        session.setAttribute("token",response.getBody());
         log.info("token info : {}",response.getBody().toString());
+    }
+
+    @GetMapping("/me")
+    public AccessToken me(HttpSession session){
+        AccessToken accessToken = (AccessToken) session.getAttribute("token");
+        return accessToken;
     }
 
 }

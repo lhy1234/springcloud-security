@@ -29,6 +29,15 @@
         var username = $("#username").val();
         var password = $("#password").val();
         alert(username+", " +password)
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:9999/login",
+            data: {"username":username, "password":password},
+            success: function(msg){
+                location.href = "http://localhost:9999/index";
+            }
+        });
     }
 
 </script>

@@ -5,8 +5,26 @@
     <title>Index</title>
 </head>
 <body>
-    <h1>Hello! Index !</h1>
+    <h1>欢迎来到sso子系统1</h1>
+    <div id="loginTip"></div>
 
-    <div th:text="${hello}">替换</div>
+
 </body>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+
+        $.get("http://localhost:9999/me",function(data,status){
+            if(data){
+                //已登录
+                $("#loginTip").html("已登录");
+            }else{
+                //未登录
+                var href = "<a href='http://localhost:9999/loginPage'>未登录，去登录</a>";
+                $("#loginTip").append(href);
+            }
+        });
+    });
+
+</script>
 </html>
