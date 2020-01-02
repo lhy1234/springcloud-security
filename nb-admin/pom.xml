@@ -55,6 +55,13 @@
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 
+
+		<!--commons-lang3-->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -87,7 +94,7 @@
 			</plugin>
 
 			<!--<plugin>
-				&lt;!&ndash;在springboot里搭出angular环境&ndash;&gt;
+				&lt;!&ndash;在springboot里搭出nodejs环境&ndash;&gt;
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
 				<version>1.8.0</version>
