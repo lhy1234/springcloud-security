@@ -27,13 +27,22 @@
             $("#productId").val(data.productId);
         });
     }
+    
+    function logout() {
+        //1，将客户端应用的session失效掉
+        $.get("/logout",function(data){
+            //2，将认证服务器的session失效, /logout 是SpringSecurity OAuth默认的退出过滤器
+            // org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter
+            window.location.href = "http://auth.nb.com:9090/logout?redirect_uri=http://admin.nb.com:8080/index";
+        });
+    }
 
     $(document).ready(function(){
 
         $.get("/me",function(data,status){
             if(data){
                 //已登录
-                var htm = "已登录,<a href='/logout'>退出</a>";
+                var htm = "已登录,<a onclick='logout()' href='#'>退出</a>";
                 $("#loginTip").html(htm);
             }else{
                 //未登录
