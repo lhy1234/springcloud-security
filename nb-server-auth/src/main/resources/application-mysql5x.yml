@@ -8,6 +8,18 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
+  redis:
+    database: 1
+    host: 127.0.0.1
+    port: 6379
+    timeout: 3000
+    password:
+    lettuce:
+      pool:
+        max-active: 200
+        max-idle: 20
+        min-idle: 5
+        max-wait: -1
 
 
 #mybatis plus 设置
@@ -24,5 +36,6 @@ mybatis-plus:
   configuration:
     # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
 
 
