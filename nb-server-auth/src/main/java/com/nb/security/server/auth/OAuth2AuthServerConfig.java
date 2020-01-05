@@ -24,7 +24,11 @@ import javax.sql.DataSource;
  *
  * 认证服务器
  **/
+<<<<<<< HEAD
 @EnableRedisHttpSession //启用spring session redis
+=======
+@EnableRedisHttpSession //spring session
+>>>>>>> chapt-5-4-springsession
 @Configuration  //这是一个配置类
 @EnableAuthorizationServer //当前应用是一个认证服务器
 public class OAuth2AuthServerConfig extends AuthorizationServerConfigurerAdapter {//AuthorizationServerConfigurerAdapter：认证服务器适配器
