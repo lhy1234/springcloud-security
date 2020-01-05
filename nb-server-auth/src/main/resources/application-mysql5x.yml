@@ -8,6 +8,18 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
+  redis:
+    database: 1
+    host: 127.0.0.1
+    port: 6379
+    timeout: 3000
+    password:
+    lettuce:
+      pool:
+        max-active: 200
+        max-idle: 20
+        min-idle: 5
+        max-wait: -1
 
 
 #mybatis plus 设置

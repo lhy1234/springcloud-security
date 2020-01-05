@@ -1,6 +1,9 @@
 
 server:
   port: 9090
+  servlet:
+    session:
+      timeout: 2592000
 
 spring:
   profiles:
