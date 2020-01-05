@@ -74,7 +74,7 @@ public class AdminController {
         HttpEntity<MultiValueMap<String,String>> entity = new HttpEntity<>(params,headers);
         ResponseEntity<AccessToken> response = restTemplate.exchange(oauthServiceUrl, HttpMethod.POST, entity, AccessToken.class);
 
-        session.setAttribute("token",response.getBody());
+        session.setAttribute("token",response.getBody().init());////调一下init方法，设置过期时间
 
         return "redirect:/index";
     }

@@ -25,7 +25,9 @@
         $.get("api/order/orders/1",function(data){
             $("#orderId").val(data.id);
             $("#productId").val(data.productId);
-        });
+        }).fail(function () {
+            alert('获取订单失败！');
+        });;
     }
     
     function logout() {

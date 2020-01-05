@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -39,6 +40,9 @@ public class OAuth2AuthServerConfig extends AuthorizationServerConfigurerAdapter
     @Qualifier("dataSource")
     @Autowired
     private DataSource dataSource;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     //tokenStore是进行存取token的接口，默认内存的实现还有redis，jdbc，jwt的实现(idea ctrl+H可看类关系)
     //这里配置用jdbc进行存取token
@@ -98,6 +102,9 @@ public class OAuth2AuthServerConfig extends AuthorizationServerConfigurerAdapter
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         //传给他一个authenticationManager用来校验传过来的用户信息是不是合法的,注进来一个，自己实现
         endpoints
+                //这里指定userDetailsService是专门给refresh_token用的，其他的四种授权模式不需要这个
+                .userDetailsService(userDetailsService)
+
                 .tokenStore(tokenStore()) //告诉服务器要用自定义的tokenStore里去存取token
                 .authenticationManager(authenticationManager);
     }
