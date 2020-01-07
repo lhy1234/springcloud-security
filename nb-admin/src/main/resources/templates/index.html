@@ -21,6 +21,7 @@
 <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 <script>
 
+
     function getOrderInfo(){
         $.get("api/order/orders/1",function(data){
             $("#orderId").val(data.id);
@@ -39,8 +40,18 @@
         });
     }
 
-    $(document).ready(function(){
+    //拦截全局错误响应
+    $(document).ajaxError(function( event, response, settings ) {
+//{"readyState":4,"responseText":"{\"message\":\"refresh fail\"}","responseJSON":{"message":"refresh fail"},"status":401,"statusText":"error"}
+        //alert(JSON.stringify(request));
+        //
+        if (response.status == 500 && response.responseText.message =='refresh fail') {
+            alert("登录失效！请重新登录！");
+        }
+    });
 
+
+    $(document).ready(function(){
         $.get("/me",function(data,status){
             if(data){
                 //已登录

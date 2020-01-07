@@ -25,7 +25,7 @@ public class SessionTokenFilter extends ZuulFilter {
         HttpServletRequest request = requestContext.getRequest();
         AccessToken accessToken = (AccessToken)request.getSession().getAttribute("token");
         if(accessToken != null){
-            //token值，如果没过期就用Access_token
+            //token值，如果没过期就用Access_token=======
             String tokenValue = accessToken.getAccess_token();
             //如果token已过期，拿refresh_token换取新的access_token
             if(accessToken.isExpired()){

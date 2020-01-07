@@ -15,6 +15,7 @@ public class NbAdminApplication {
 
 
 
+
 	public static void main(String[] args) {
 		SpringApplication.run(NbAdminApplication.class, args);
 		System.err.println("======== nb-admin启动成功 =========");
