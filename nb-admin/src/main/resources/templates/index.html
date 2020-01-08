@@ -42,11 +42,21 @@
 
     //拦截全局错误响应
     $(document).ajaxError(function( event, response, settings ) {
-//{"readyState":4,"responseText":"{\"message\":\"refresh fail\"}","responseJSON":{"message":"refresh fail"},"status":401,"statusText":"error"}
+        //response打印出来是这样式的：
+        //{"readyState":4,"responseText":"{\"message\":\"refresh fail\"}","responseJSON":{"message":"refresh fail"},"status":401,"statusText":"error"}
         //alert(JSON.stringify(request));
-        //
-        if (response.status == 500 && response.responseText.message =='refresh fail') {
-            alert("登录失效！请重新登录！");
+        if (response.status == 500 && response.responseJSON.message =='refresh fail') {
+            //alert("登录失效！请重新登录！");
+            //在这里处理，登录失效让用户去认证服务器走1遍退出流程
+            logout();
+
+            //如果refresh_token失效了,还不想让失效，去认证服务器看session
+//            window.location.href="http://auth.nb.com:9090/oauth/authorize?"
+//                +"client_id=admin&"
+//                +"redirect_uri=http://admin.nb.com:8080/oauth/callback&"
+//                +"response_type=code&"
+//                +"state=/index";
+
         }
     });
 
