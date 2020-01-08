@@ -1,5 +1,7 @@
 zuul:
   routes: #路由的配置是个Map，可以配置多个
+    user:
+      url:  http://auth.nb.com:9090
     token:  #token结尾的请求，都转发到http://localhost:9090认证服务器地址
       url:  http://auth.nb.com:9090
     order:  #order结尾的请求，都转发到http://localhost:9060 顶单服务

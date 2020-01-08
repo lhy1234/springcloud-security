@@ -9,6 +9,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -53,7 +54,7 @@ public class AdminController {
      * @param session
      */
     @GetMapping("/oauth/callback")
-    public String callback(@RequestParam String code,String state ,HttpSession session){
+    public String callback(@RequestParam String code,String state ,HttpSession session,HttpServletResponse response){
 
         log.info("code is {}, state is {}",code,state);
 
@@ -72,19 +73,31 @@ public class AdminController {
         params.add("redirect_uri","http://admin.nb.com:8080/oauth/callback");
 
         HttpEntity<MultiValueMap<String,String>> entity = new HttpEntity<>(params,headers);
-        ResponseEntity<AccessToken> response = restTemplate.exchange(oauthServiceUrl, HttpMethod.POST, entity, AccessToken.class);
+        ResponseEntity<AccessToken> token = restTemplate.exchange(oauthServiceUrl, HttpMethod.POST, entity, AccessToken.class);
 
-        session.setAttribute("token",response.getBody().init());////调一下init方法，设置过期时间
+        //基于session的SSO:session.setAttribute("token",token.getBody().init());////调一下init方法，设置过期时间
 
+        //基于 Cookie的SSO，拿到token后写入浏览器Cookie
+        Cookie accessTokenCookie = new Cookie("nb_access_token",token.getBody().getAccess_token());
+        accessTokenCookie.setMaxAge(token.getBody().getExpires_in().intValue()-3);//有效期
+        accessTokenCookie.setDomain("nb.com");//所有以nb.com结尾的二级域名都可以访问到cookie
+        accessTokenCookie.setPath("/");
+        response.addCookie(accessTokenCookie);
+
+        Cookie refreshTokenCookie = new Cookie("nb_refresh_token",token.getBody().getAccess_token());
+        accessTokenCookie.setMaxAge(2592000);//这里随便写一个很大的值（没用），如果是过期的token服务器将处理的。
+        accessTokenCookie.setDomain("nb.com");//所有以nb.com结尾的二级域名都可以访问到cookie
+        accessTokenCookie.setPath("/");
+        response.addCookie(refreshTokenCookie);
         return "redirect:/index";
     }
 
-    @GetMapping("/me")
-    @ResponseBody
-    public AccessToken me(HttpSession session){
-        AccessToken accessToken = (AccessToken) session.getAttribute("token");
-        return accessToken;
-    }
+//    @GetMapping("/me")
+//    @ResponseBody
+//    public AccessToken me(HttpSession session){
+//        AccessToken accessToken = (AccessToken) session.getAttribute("token");
+//        return accessToken;
+//    }
 
     @GetMapping("/logout")
     public String logout(HttpSession session){

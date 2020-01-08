@@ -19,6 +19,7 @@
 
 </body>
 <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <script>
 
 
@@ -32,12 +33,14 @@
     }
     
     function logout() {
-        //1，将客户端应用的session失效掉
-        $.get("/logout",function(data){
+        //$.get("/logout",function(data){
+            //1浏览器cookie失效掉
+            $.removeCookie('nb_access_token',{ path: '/'});
+            $.removeCookie('nb_refresh_token',{ path: '/'});
             //2，将认证服务器的session失效, /logout 是SpringSecurity OAuth默认的退出过滤器
             // org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter
             window.location.href = "http://auth.nb.com:9090/logout?redirect_uri=http://admin.nb.com:8080/index";
-        });
+        //});
     }
 
     //拦截全局错误响应
@@ -49,20 +52,12 @@
             //alert("登录失效！请重新登录！");
             //在这里处理，登录失效让用户去认证服务器走1遍退出流程
             logout();
-
-            //如果refresh_token失效了,还不想让失效，去认证服务器看session
-//            window.location.href="http://auth.nb.com:9090/oauth/authorize?"
-//                +"client_id=admin&"
-//                +"redirect_uri=http://admin.nb.com:8080/oauth/callback&"
-//                +"response_type=code&"
-//                +"state=/index";
-
         }
     });
 
 
     $(document).ready(function(){
-        $.get("/me",function(data,status){
+        $.get("api/user/me",function(data,status){
             if(data){
                 //已登录
                 var htm = "已登录,<a onclick='logout()' href='#'>退出</a>";
@@ -72,6 +67,10 @@
                 var href = "<a href='/toAuthLogin'>未登录，去登录</a>";
                 $("#loginTip").append(href);
             }
+        }).fail(function () {
+            //未登录
+            var href = "<a href='/toAuthLogin'>未登录，去登录</a>";
+            $("#loginTip").append(href);
         });
     });
 
