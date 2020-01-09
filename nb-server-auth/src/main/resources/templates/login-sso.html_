@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>阳仔SSO-欢迎登录</title>
+</head>
+<body>
+    <h3>欢迎来到SSO</h3>
+    <form action="/login" method="post">
+        <table border="1">
+            <tr>
+                <td>用户名</td>
+                <td><input name="username"/></td>
+            </tr>
+            <tr>
+                <td>密码</td>
+                <td><input name="password"/></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td colspan="2" align="right"><button type="submit">登录</button></td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

@@ -5,7 +5,7 @@
     <title>Index</title>
 </head>
 <body>
-    <h1>welcome to 系统1</h1>
+    <h1>welcome to admin cilent</h1>
     <div id="loginTip"></div>
     <p><button onclick="getOrderInfo()">获取订单信息</button></p>
 
@@ -35,8 +35,14 @@
     function logout() {
         //$.get("/logout",function(data){
             //1浏览器cookie失效掉
-            $.removeCookie('nb_access_token',{ path: '/'});
-            $.removeCookie('nb_refresh_token',{ path: '/'});
+//        alert("删除之前--"+$.cookie('nb_access_token'));
+//        alert("删除之前--"+$.cookie('nb_refresh_token'));
+        $.removeCookie('nb_access_token',{domain:'nb.com',path:'/'});
+        $.removeCookie('nb_refresh_token',{domain:'nb.com',path:'/'});
+//            $.removeCookie('nb_access_token',{ path: '/'});
+//            $.removeCookie('nb_refresh_token',{ path: '/'});
+//            alert($.cookie('nb_access_token'));
+//            alert($.cookie('nb_refresh_token'));
             //2，将认证服务器的session失效, /logout 是SpringSecurity OAuth默认的退出过滤器
             // org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter
             window.location.href = "http://auth.nb.com:9090/logout?redirect_uri=http://admin.nb.com:8080/index";
@@ -57,7 +63,9 @@
 
 
     $(document).ready(function(){
+        //TODO:这里写成 /api/user/me 就会疯狂刷新页面
         $.get("api/user/me",function(data,status){
+
             if(data){
                 //已登录
                 var htm = "已登录,<a onclick='logout()' href='#'>退出</a>";
