@@ -20,10 +20,6 @@ spring:
         max-idle: 20
         min-idle: 5
         max-wait: -1
-<<<<<<< HEAD
-
-=======
->>>>>>> chapt-5-4-springsession
 
 #mybatis plus 设置
 mybatis-plus:

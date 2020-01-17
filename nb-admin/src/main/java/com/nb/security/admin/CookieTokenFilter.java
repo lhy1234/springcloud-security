@@ -61,10 +61,10 @@ public class CookieTokenFilter extends ZuulFilter {
                     accessTokenCookie.setPath("/");
                     response.addCookie(accessTokenCookie);
 
-                    Cookie refreshTokenCookie = new Cookie("nb_refresh_token",newToken.getBody().getAccess_token());
-                    accessTokenCookie.setMaxAge(2592000);//这里随便写一个很大的值（没用），如果是过期的token服务器将处理的。
-                    accessTokenCookie.setDomain("nb.com");//所有以nb.com结尾的二级域名都可以访问到cookie
-                    accessTokenCookie.setPath("/");
+                    Cookie refreshTokenCookie = new Cookie("nb_refresh_token",newToken.getBody().getRefresh_token());
+                    refreshTokenCookie.setMaxAge(2592000);//这里随便写一个很大的值（没用），如果是过期的token服务器将处理的。
+                    refreshTokenCookie.setDomain("nb.com");//所有以nb.com结尾的二级域名都可以访问到cookie
+                    refreshTokenCookie.setPath("/");
                     response.addCookie(refreshTokenCookie);
                 }catch (Exception e){
                     //有异常，重新登录
