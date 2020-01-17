@@ -24,19 +24,28 @@
 
 
     function getOrderInfo(){
-        $.get("api/order/orders/1",function(data){
-            $("#orderId").val(data.id);
-            $("#productId").val(data.productId);
-        }).fail(function () {
-            alert('获取订单失败！');
-        });;
+
+        $.ajax({
+            type: "get",
+            url: "api/order/orders/1",
+            success: function(data){
+                $("#orderId").val(data.id);
+                $("#productId").val(data.productId);
+            },
+            //请求失败，包含具体的错误信息
+            error : function(e){
+                //alert(JSON.stringify(e))
+                //{"readyState":4,"responseText":"{\"message\":\"auth fail\"}","responseJSON":{"message":"auth fail"},"status":401,"statusText":"error"}
+                if(e.status == 500 && e.responseJSON.message =='refresh fail'){
+                    logout();
+                }
+            }
+        });
     }
     
     function logout() {
         //$.get("/logout",function(data){
             //1浏览器cookie失效掉
-//        alert("删除之前--"+$.cookie('nb_access_token'));
-//        alert("删除之前--"+$.cookie('nb_refresh_token'));
         $.removeCookie('nb_access_token',{domain:'nb.com',path:'/'});
         $.removeCookie('nb_refresh_token',{domain:'nb.com',path:'/'});
 //            $.removeCookie('nb_access_token',{ path: '/'});
@@ -57,6 +66,7 @@
         if (response.status == 500 && response.responseJSON.message =='refresh fail') {
             //alert("登录失效！请重新登录！");
             //在这里处理，登录失效让用户去认证服务器走1遍退出流程
+            alert("登录已失效，请重新登录 ");
             logout();
         }
     });

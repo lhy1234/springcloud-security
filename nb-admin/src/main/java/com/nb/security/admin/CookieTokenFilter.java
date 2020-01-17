@@ -53,7 +53,7 @@ public class CookieTokenFilter extends ZuulFilter {
                 try{
                     ResponseEntity<AccessToken> newToken = restTemplate.exchange(oauthServiceUrl, HttpMethod.POST, entity, AccessToken.class);
                     //令牌放到请求头
-                    requestContext.addZuulRequestHeader("Authorization","Bearer "+accessToken);
+                    requestContext.addZuulRequestHeader("Authorization","Bearer "+newToken.getBody().getAccess_token());
                     //基于 Cookie的SSO，拿到token后写入浏览器Cookie
                     Cookie accessTokenCookie = new Cookie("nb_access_token",newToken.getBody().getAccess_token());
                     accessTokenCookie.setMaxAge(newToken.getBody().getExpires_in().intValue()-3);//有效期
