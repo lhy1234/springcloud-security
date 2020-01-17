@@ -34,7 +34,6 @@
             },
             //请求失败，包含具体的错误信息
             error : function(e){
-                //alert(JSON.stringify(e))
                 //{"readyState":4,"responseText":"{\"message\":\"auth fail\"}","responseJSON":{"message":"auth fail"},"status":401,"statusText":"error"}
                 if(e.status == 500 && e.responseJSON.message =='refresh fail'){
                     logout();
@@ -44,18 +43,12 @@
     }
     
     function logout() {
-        //$.get("/logout",function(data){
-            //1浏览器cookie失效掉
+        //1浏览器cookie失效掉
         $.removeCookie('nb_access_token',{domain:'nb.com',path:'/'});
         $.removeCookie('nb_refresh_token',{domain:'nb.com',path:'/'});
-//            $.removeCookie('nb_access_token',{ path: '/'});
-//            $.removeCookie('nb_refresh_token',{ path: '/'});
-//            alert($.cookie('nb_access_token'));
-//            alert($.cookie('nb_refresh_token'));
-            //2，将认证服务器的session失效, /logout 是SpringSecurity OAuth默认的退出过滤器
-            // org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter
-            window.location.href = "http://auth.nb.com:9090/logout?redirect_uri=http://admin.nb.com:8080/index";
-        //});
+        //2，将认证服务器的session失效, /logout 是SpringSecurity OAuth默认的退出过滤器
+        // org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter
+        window.location.href = "http://auth.nb.com:9090/logout?redirect_uri=http://admin.nb.com:8080/index";
     }
 
     //拦截全局错误响应
