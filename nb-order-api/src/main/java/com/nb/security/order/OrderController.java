@@ -1,7 +1,9 @@
 package com.nb.security.order;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -10,9 +12,13 @@ import org.springframework.web.client.RestTemplate;
 @RequestMapping("/orders")
 public class OrderController {
 
+    //OAuth2RestTemplate：
+    //会从请求的上下文里拿到令牌，放到请求头里，发出去。
+    @Autowired
+    private OAuth2RestTemplate restTemplate;
+
     /**
-     * 在Zuul网关里，授权成功后，往请求头里加入username属性，可以传入任何属性，
-     * 甚至是一个json，这里可以转换为对象
+     * 创建订单
      * @param info
      * @param
      * @return
@@ -21,8 +27,8 @@ public class OrderController {
     public OrderInfo create(@RequestBody OrderInfo info,@AuthenticationPrincipal String username){
         log.info("获取到username = {}",username);
         //查询价格
-//        PriceInfo price = restTemplate.getForObject("http://localhost:9080/prices/"+info.getProductId(),PriceInfo.class);
-//        log.info("price is "+price.getPrice());
+        PriceInfo price = restTemplate.getForObject("http://localhost:9080/prices/"+info.getProductId(),PriceInfo.class);
+        log.info("price is "+price.getPrice());
         return info;
     }
 
