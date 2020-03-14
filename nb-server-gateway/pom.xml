@@ -52,6 +52,11 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-oauth2</artifactId>
+		</dependency>
+
 		<!-- 网飞的zuul网关 -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -105,9 +110,9 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<!--mysql 5x 用这个连接-->
-			<!--<version>5.1.47</version>-->
+			<version>5.1.47</version>
 			<!--mysql 8.0 用这个连接-->
-			<version>8.0.16</version>
+			<!--<version>8.0.16</version>-->
 			<scope>runtime</scope>
 		</dependency>
 

@@ -45,5 +45,14 @@ mybatis-plus:
     # \u8FD9\u4E2A\u914D\u7F6E\u4F1A\u5C06\u6267\u884C\u7684sql\u6253\u5370\u51FA\u6765\uFF0C\u5728\u5F00\u53D1\u6216\u6D4B\u8BD5\u7684\u65F6\u5019\u53EF\u4EE5\u7528
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+security:
+  oauth2:
+    resource:
+      jwt:
+        key-uri:  http://auth.nb.com:9090/oauth/token_key  #获取解析jwt，验签名key的路径
+    client:
+      client-id:  gateway #获取验签key需要身份认证，这里是网关的clientId
+      client-secret:  123456  #获取验签key需要身份认证，这里是网关的secret
+
 
 

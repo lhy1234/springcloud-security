@@ -1,6 +1,7 @@
 package com.nb.security.order;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,7 +18,7 @@ public class OrderController {
      * @return
      */
     @PostMapping
-    public OrderInfo create(@RequestBody OrderInfo info,@RequestHeader String username){
+    public OrderInfo create(@RequestBody OrderInfo info,@AuthenticationPrincipal String username){
         log.info("获取到username = {}",username);
         //查询价格
 //        PriceInfo price = restTemplate.getForObject("http://localhost:9080/prices/"+info.getProductId(),PriceInfo.class);

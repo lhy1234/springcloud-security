@@ -54,8 +54,13 @@ public class OAuth2AuthServerConfig extends AuthorizationServerConfigurerAdapter
         return new JwtTokenStore(jwtTokenEnhancer());//jwt存取token
     }
 
-
-    private JwtAccessTokenConverter jwtTokenEnhancer() {
+    /**
+     * 这里必须声明为 public的@Bean 才能把拿jwt解析的key的服务暴露出去，否则资源服务器会报异常
+     *
+     * @return
+     */
+    @Bean
+    public JwtAccessTokenConverter jwtTokenEnhancer() {
         /**
          * 对jwt进行签名的key，jwt是明文，签名防篡改。
          * 接收token的人需要用同样的key验签名，需要把这个key通过服务暴漏出去，使用服务的人才能拿到key

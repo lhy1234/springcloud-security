@@ -19,7 +19,7 @@ public class PriceController {
 
 
     @GetMapping("/{productId}")
-    public PriceInfo getPrice(@PathVariable Long productId){
+    public PriceInfo getPrice(@PathVariable Long productId,@AuthenticationPrincipal String username){
         log.info("product id is "+productId);
         PriceInfo info = new PriceInfo();
         info.setProductId(productId);
