@@ -4,6 +4,7 @@ import com.nb.security.GatewayAccessDeniedHandler;
 import com.nb.security.GatewayAuthenticationEntryPoint;
 import com.nb.security.GatewayWebSecurityExpressionHandler;
 import com.nb.security.filter.GatewayAuditLogFilter;
+import com.nb.security.filter.GatewayRateLimitFilter;
 import com.nb.security.service.IAuditLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 
 /**
  * 作为一个资源服务器存在
@@ -43,7 +45,8 @@ public class GatewaySecurityConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http
+        http //限流过滤器，加载SpringSecurity过滤器链的第一个过滤器前
+             .addFilterBefore(new GatewayRateLimitFilter(), SecurityContextPersistenceFilter.class)
             //可以指定过滤器位置，加在【授权】过滤器前面
             //授权过滤器里，会抛出异常 401或403，这两个异常抛出来后都会由ExceptionTranslationFilter来处理，所以加在这里
             .addFilterBefore(new GatewayAuditLogFilter(auditLogService), ExceptionTranslationFilter.class)
