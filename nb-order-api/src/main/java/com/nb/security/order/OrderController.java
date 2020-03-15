@@ -2,6 +2,7 @@ package com.nb.security.order;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,9 @@ public class OrderController {
      * @param
      * @return
      */
+    //注解生效需在启动类配置@EnableGlobalMethodSecurity(prePostEnabled = true)
+    //@PreAuthorize("#oauth2.hasScope('write')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public OrderInfo create(@RequestBody OrderInfo info,@AuthenticationPrincipal String username){
         log.info("获取到username = {}",username);
