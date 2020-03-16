@@ -31,8 +31,8 @@ public class OrderController {
     public OrderInfo create(@RequestBody OrderInfo info,@AuthenticationPrincipal String username){
         log.info("获取到username = {}",username);
         //查询价格
-        PriceInfo price = restTemplate.getForObject("http://localhost:9080/prices/"+info.getProductId(),PriceInfo.class);
-        log.info("price is "+price.getPrice());
+        //PriceInfo price = restTemplate.getForObject("http://localhost:9080/prices/"+info.getProductId(),PriceInfo.class);
+        //log.info("price is "+price.getPrice());
         return info;
     }
 
