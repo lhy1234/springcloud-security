@@ -26,6 +26,6 @@ public class PermissionServiceImpl implements PermissionService {
         }
 
         //这里模拟
-        return RandomUtils.nextInt() % 2 ==0;
+        return true;//RandomUtils.nextInt() % 2 ==0;
     }
 }

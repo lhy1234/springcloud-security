@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 public class GatewayRateLimitFilter extends OncePerRequestFilter {
 
-    private RateLimiter rateLimiter = RateLimiter.create(1);
+    private RateLimiter rateLimiter = RateLimiter.create(100);
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

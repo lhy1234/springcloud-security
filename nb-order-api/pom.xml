@@ -61,11 +61,19 @@
 		</dependency>
 		<!--阿里巴巴sentinel 控制台-->
 		<!--这个引用适用于JVM启动参数的配置方式，springboot不友好-->
+<<<<<<< HEAD
 		<dependency>
 			<groupId>com.alibaba.csp</groupId>
 			<artifactId>sentinel-transport-simple-http</artifactId>
 			<version>1.7.1</version>
 		</dependency>
+=======
+		<!--<dependency>
+			<groupId>com.alibaba.csp</groupId>
+			<artifactId>sentinel-transport-simple-http</artifactId>
+			<version>1.7.1</version>
+		</dependency>-->
+>>>>>>> chapt-6-6-sentinel-ratelimit
 		<!-- https://github.com/alibaba/spring-cloud-alibaba/wiki/Sentinel-->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
