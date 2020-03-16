@@ -1,5 +1,8 @@
 package com.nb.security.order;
 
+import com.alibaba.csp.sentinel.Entry;
+import com.alibaba.csp.sentinel.SphU;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,10 +32,17 @@ public class OrderController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public OrderInfo create(@RequestBody OrderInfo info,@AuthenticationPrincipal String username){
-        log.info("获取到username = {}",username);
+
+        try(Entry entry = SphU.entry("createOrder")){ //资源名称-createOrder
+            // 被保护的逻辑
+            log.info("获取到username = {}",username);
+        }catch (BlockException ex){
+            // 处理被流控的逻辑
+            log.info("blocked!");
+        }
         //查询价格
-        PriceInfo price = restTemplate.getForObject("http://localhost:9080/prices/"+info.getProductId(),PriceInfo.class);
-        log.info("price is "+price.getPrice());
+        //PriceInfo price = restTemplate.getForObject("http://localhost:9080/prices/"+info.getProductId(),PriceInfo.class);
+        //log.info("price is "+price.getPrice());
         return info;
     }
 
