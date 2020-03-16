@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: order
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:8888
+        port: 8719   #机器上启动一个 Http Server，该 Server 会与 Sentinel 控制台做交互
 
 
 security:

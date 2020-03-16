@@ -2,6 +2,7 @@ package com.nb.security.order;
 
 import com.alibaba.csp.sentinel.Entry;
 import com.alibaba.csp.sentinel.SphU;
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,21 +32,23 @@ public class OrderController {
     //@PreAuthorize("#oauth2.hasScope('write')")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
-    public OrderInfo create(@RequestBody OrderInfo info,@AuthenticationPrincipal String username){
-
-        try(Entry entry = SphU.entry("createOrder")){ //资源名称-createOrder
-            // 被保护的逻辑
-            log.info("获取到username = {}",username);
-        }catch (BlockException ex){
-            // 处理被流控的逻辑
-            log.info("blocked!");
-        }
+    @SentinelResource(value = "createOrder",blockHandler = "doOnBlock") //通过注解指定sentinel资源
+    public OrderInfo create(@RequestBody OrderInfo info,@AuthenticationPrincipal String username) throws InterruptedException {
+        Thread.sleep(50);
+        log.info("获取到username = {}",username);
         //查询价格
         //PriceInfo price = restTemplate.getForObject("http://localhost:9080/prices/"+info.getProductId(),PriceInfo.class);
         //log.info("price is "+price.getPrice());
         return info;
     }
 
+    //降级处理逻辑，和原方法在一个类里，参数一致，多一个BlockException，名字自定义
+    public OrderInfo doOnBlock(@RequestBody OrderInfo info,@AuthenticationPrincipal String username,BlockException exception) {
+        log.info("BlockException:{}",exception.getClass().getSimpleName());
+        info.setId(999L);
+        info.setProductId(999L);
+        return info;
+    }
 
     @GetMapping("/{id}")
     public OrderInfo getInfo(@PathVariable Long id ,@RequestHeader String username){
