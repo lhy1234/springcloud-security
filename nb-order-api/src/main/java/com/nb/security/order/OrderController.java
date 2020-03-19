@@ -51,7 +51,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public OrderInfo getInfo(@PathVariable Long id ,@RequestHeader String username){
+    public OrderInfo getInfo(@PathVariable Long id ,@AuthenticationPrincipal String username){
         log.info("getInfo: id is "+id +" , and username is "+username);
         OrderInfo info = new OrderInfo();
         info.setId(id);

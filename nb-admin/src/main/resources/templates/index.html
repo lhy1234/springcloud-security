@@ -24,12 +24,24 @@
 
 
     function getOrderInfo(){
-        $.get("api/order/orders/1",function(data){
-            $("#orderId").val(data.id);
-            $("#productId").val(data.productId);
-        }).fail(function () {
-            alert('获取订单失败！');
-        });;
+        var nb_access_token = $.cookie('nb_access_token');
+        $.ajax({
+            //请求方式
+            type : "get",
+            contentType: "application/json;charset=UTF-8",
+            headers: {
+                'Authorization': "Bearer "+nb_access_token,
+            },
+            url : "api/order/orders/1",
+            success : function(data) {
+                $("#orderId").val(data.id);
+                $("#productId").val(data.productId);
+            },
+            //请求失败，包含具体的错误信息
+            error : function(e){
+                alert('获取订单失败！');
+            }
+        });
     }
     
     function logout() {
@@ -63,23 +75,17 @@
 
 
     $(document).ready(function(){
-        //TODO:这里写成 /api/user/me 就会疯狂刷新页面
-        $.get("api/user/me",function(data,status){
-
-            if(data){
-                //已登录
-                var htm = "已登录,<a onclick='logout()' href='#'>退出</a>";
-                $("#loginTip").html(htm);
-            }else{
-                //未登录
-                var href = "<a href='/toAuthLogin'>未登录，去登录</a>";
-                $("#loginTip").append(href);
-            }
-        }).fail(function () {
+        //alert($.cookie('nb_access_token'));
+        var nb_access_token = $.cookie('nb_access_token');
+        if(nb_access_token){
+            //已登录
+            var htm = "已登录,<a onclick='logout()' href='#'>退出</a>";
+            $("#loginTip").html(htm);
+        }else{
             //未登录
             var href = "<a href='/toAuthLogin'>未登录，去登录</a>";
             $("#loginTip").append(href);
-        });
+        }
     });
 
 </script>
