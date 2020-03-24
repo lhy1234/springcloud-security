@@ -59,7 +59,7 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
 
-                .authorizeRequests()
+                .authorizeRequests().antMatchers("/sms/codeSend").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().and() //这里可以自定义登录页面
