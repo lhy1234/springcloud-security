@@ -91,7 +91,7 @@
             <!--mysql 5x 用这个连接-->
             <!--<version>5.1.47</version>-->
             <!--mysql 8.0 用这个连接-->
-            <version>8.0.16</version>
+            <version>8.0.28</version>
             <scope>runtime</scope>
         </dependency>
 
